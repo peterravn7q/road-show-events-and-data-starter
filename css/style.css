@@ -1,0 +1,315 @@
+/* ---------------------------------------------------------
+   Import af font
+--------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* ---------------------------------------------------------
+   Root-variabler
+--------------------------------------------------------- */
+:root {
+   --font-body: 'Poppins', sans-serif;
+
+   /* Farver */
+   --color-sky-top: #a6d8ff;
+   --color-sky-mid: #ffffff;
+   --color-sky-bot: #ffffff;
+   --color-night: #222833;
+   --color-sun: #ffffff;
+
+   /* Skriv selv: billedstørrelser (px)
+      Opret to variabler her:
+        --sun-size med værdien 100px  (solens bredde og højde)
+        --car-w    med værdien 200px  (bilernes bredde)
+      Variablerne bruges længere nede med var(--sun-size) og var(--car-w).
+      Når siden virker: prøv at ændre værdierne. Hvad sker der?
+   */
+
+}
+
+/* ---------------------------------------------------------
+   Global reset
+--------------------------------------------------------- */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: var(--font-body);
+}
+
+/* ---------------------------------------------------------
+   Scene
+--------------------------------------------------------- */
+/* Skriv selv: .scene (himlen)
+   Scenen er rammen om alt det andet, så start med denne regel.
+   Skriv en regel for .scene med:
+     - position: relative  (solen og vejen placeres i forhold til scenen)
+     - height: 100vh       (scenen fylder hele skærmens højde)
+     - overflow: hidden    (Undersøg selv: hvad sker der, hvis du fjerner den?)
+     - background: en linear-gradient med de tre himmelfarver:
+         var(--color-sky-top), var(--color-sky-mid), var(--color-sky-bot)
+*/
+
+
+
+/* Skriv selv: nat-tilstand
+   JavaScript tilføjer klassen "night" til .scene, når man klikker på solen.
+   Skriv en regel for .scene.night, der sætter background til var(--color-night).
+*/
+
+
+
+/* ---------------------------------------------------------
+   Sol og måne
+--------------------------------------------------------- */
+.sun {
+   position: absolute;
+   width: var(--sun-size);
+   height: var(--sun-size);
+   background: var(--color-sun);
+   border-radius: 50%;
+   top: 10vh;
+   left: 55%;
+   transform: translateX(-50%);
+   box-shadow: 0 0 5vw var(--color-sun);
+   transition: 0.2s;
+   cursor: pointer;
+}
+
+/* Nat: dæmp gløden */
+.scene.night .sun {
+   left: 45%;
+   box-shadow: 0 0 0 var(--color-sun);
+}
+
+/* Undersøg selv: hvad gør :before og content? Hvordan bliver solen til en måne? */
+.scene.night .sun:before {
+   content: "";
+   position: absolute;
+   top: -20px;
+   left: 20px;
+   width: 100%;
+   height: 100%;
+   background: var(--color-night);
+   border-radius: 50%;
+}
+
+/* ---------------------------------------------------------
+   Baggrund (vejen, der kører)
+--------------------------------------------------------- */
+.bg {
+   position: absolute;
+   inset: auto 0 0 0; /* Undersøg selv: hvad betyder de fire værdier i inset? */
+   width: 100%;
+   height: 280px;
+   background: url(../img/bg.png);
+   background-size: 100vw auto;
+   background-repeat: repeat-x; /* Undersøg selv: background-repeat */
+   animation: animateBg 17s linear infinite;
+}
+
+/* Eksempel: flyt baggrunden én skærmbredde til venstre - og start forfra */
+@keyframes animateBg {
+   0%   { background-position-x: 0; }
+   100% { background-position-x: -100vw; }
+}
+
+/* ---------------------------------------------------------
+   Biler - fælles
+--------------------------------------------------------- */
+.car1,
+.car2,
+.car3 {
+   position: absolute;
+   width: var(--car-w);
+   max-width: 28vw;
+   z-index: 1;
+   cursor: pointer; /* viser en hånd, så man kan se, at bilerne kan klikkes */
+}
+
+/* ---------------------------------------------------------
+   car1 (rød bil): venstre → højre
+   EKSEMPEL - læs den godt igennem, før du laver car2 og car3
+
+   Sådan regner vi:
+   - Bilen starter 30vw uden for skærmen til venstre (left: -30vw).
+   - Den skal køre hele skærmen (100vw) + de 30vw = 130vw.
+   - Positivt tal = mod højre.
+   (Bilerne er højst 28vw brede, så med 30vw er de helt skjult.)
+--------------------------------------------------------- */
+.car1 {
+   bottom: 2.8vh;
+   left: -30vw; /* starter 30vw uden for skærmen til venstre */
+   animation: car1 18s linear infinite;
+}
+
+@keyframes car1 {
+   0%   { transform: translateX(0); }
+   100% { transform: translateX(130vw); }
+}
+
+/* ---------------------------------------------------------
+   car2 (politibil): højre → venstre
+--------------------------------------------------------- */
+.car2 {
+   bottom: 2.8vh;
+   right: -30vw; /* starter 30vw uden for skærmen til højre */
+   animation: car2 12s linear infinite;
+}
+
+/* Skriv selv: @keyframes car2
+   Brug car1 ovenfor som skabelon. Politibilen kører bare den modsatte vej.
+
+   Hvert trin skal have egenskaben transform med BEGGE funktioner:
+       transform: translateX(...) rotateY(180deg);
+
+   - 0%:   translateX(0)
+   - 100%: translateX(-130vw)   (negativt tal = mod venstre)
+   - rotateY(180deg) spejlvender billedet, så bilen vender den rigtige vej.
+     Den skal stå i BEGGE trin, ellers vender bilen sig undervejs.
+
+   Ekstra: skriv "90%, 100%" i stedet for "100%". Hvad sker der så?
+*/
+
+
+
+/* ---------------------------------------------------------
+   car3 (blå bil): venstre → højre (spejlvendt)
+--------------------------------------------------------- */
+.car3 {
+   bottom: -3.4vh;
+   left: -30vw; /* starter 30vw uden for skærmen til venstre */
+   animation: car3 8s linear infinite;
+}
+
+/* Skriv selv: @keyframes car3
+   Brug car1 ovenfor som skabelon. Den blå bil kører samme vej som car1.
+
+   Hvert trin skal have egenskaben transform med BEGGE funktioner:
+       transform: translateX(...) rotateY(180deg);
+
+   - 0%:   translateX(0)
+   - 100%: translateX(130vw)   (positivt tal = mod højre)
+   - rotateY(180deg) spejlvender billedet, fordi den blå bil vender den
+     anden vej i billedfilen. Den skal stå i BEGGE trin,
+     ellers vender bilen sig undervejs.
+*/
+
+
+
+/* ---------------------------------------------------------
+   Tooltip (bilens informationer)
+--------------------------------------------------------- */
+.tooltip {
+   position: fixed;
+   right: 16px;
+   bottom: 16px;
+   background-color: rgba(0, 0, 0, 0.85);
+   color: #fff;
+   padding: 10px 12px;
+   border-radius: 8px;
+   font-size: 14px;
+   line-height: 1.35;
+   max-width: min(320px, 90vw);
+   opacity: 0; /* usynlig fra start */
+   transform: translateY(8px);
+   transition: opacity 0.25s ease, transform 0.25s ease;
+   pointer-events: none; /* så den ikke fanger musen */
+   z-index: 1000;
+}
+
+/* Skriv selv: synlig tooltip
+   JavaScript tilføjer klassen "is-visible" til tooltip'en, når musen er over en bil.
+   Skriv en regel for .tooltip.is-visible, der sætter:
+     - opacity til 1
+     - transform til translateY(0)
+*/
+
+
+
+
+/* =========================================================
+   EKSTRAOPGAVE: bus og truck
+   Lav først E1 og E2 i index.html, så billederne er på siden.
+========================================================= */
+
+/* ---------------------------------------------------------
+   E3. Fælles regel for alle køretøjer
+--------------------------------------------------------- */
+/* Skriv selv: find reglen "Biler - fælles" længere oppe (.car1, .car2, .car3).
+   Tilføj .bus og .truck til selector-listen, så de nye køretøjer får samme
+   position, bredde, z-index og cursor som bilerne.
+
+   Hint: selectorerne adskilles med komma.
+   Undersøg selv: hvorfor er det smartere end at skrive de samme
+   egenskaber igen i en ny regel?
+*/
+
+
+/* ---------------------------------------------------------
+   E4. Størrelse
+--------------------------------------------------------- */
+/* Skriv selv: en bus og en truck er større end en bil.
+   Opret en ny variabel i :root, fx --bus-w, og giv den en værdi, der er
+   større end --car-w (prøv dig frem, fx 260px).
+
+   Brug variablen i reglerne for .bus og .truck nedenfor med width: var(--bus-w).
+
+   Hint: den fælles regel har max-width: 28vw. Hvorfor er det vigtigt,
+   at køretøjerne aldrig er bredere end 30vw? (Kig på regnestykket ved car1.)
+*/
+
+
+/* ---------------------------------------------------------
+   E5. Bus: højre → venstre
+--------------------------------------------------------- */
+/* Skriv selv: en regel for .bus med:
+     - bottom: bussen skal køre i den bageste vognbane
+       (Hint: hvilken bottom-værdi har politibilen?)
+     - right: -30vw  (starter uden for skærmen til højre)
+     - width: var(--bus-w)
+     - animation: bus 20s linear infinite
+
+   Skriv selv: @keyframes bus
+     Brug car2 (politibilen) som skabelon, fordi den kører samme vej:
+     fra højre mod venstre.
+
+   - 0%:   translateX(0)
+   - 100%: translateX(-130vw)   (negativt tal = mod venstre)
+
+   OBS: bussen vender allerede rigtigt i billedfilen, så du skal IKKE
+   bruge rotateY(180deg) her.
+   Undersøg selv: hvad sker der, hvis du alligevel tilføjer den?
+*/
+
+
+
+/* ---------------------------------------------------------
+   E6. Truck: højre → venstre
+--------------------------------------------------------- */
+/* Skriv selv: en regel for .truck med:
+     - bottom: truck'en skal køre i den forreste vognbane
+       (Hint: hvilken bottom-værdi har den blå bil?)
+     - right: -30vw  (starter uden for skærmen til højre)
+     - width: var(--bus-w)
+     - animation: truck 14s linear infinite
+
+   Skriv selv: @keyframes truck
+     Truck'en kører samme vej som bussen: fra højre mod venstre.
+     Brug din @keyframes bus som skabelon.
+
+   OBS: truck'en vender også rigtigt i billedfilen, så du skal IKKE
+   bruge rotateY(180deg) her.
+*/
+
+
+
+/* ---------------------------------------------------------
+   Ekstra-ekstra (valgfrit)
+--------------------------------------------------------- */
+/* Undersøg selv: egenskaben animation-delay.
+   Kan du bruge den til at få bussen til at vente 5 sekunder,
+   før den kører ind på skærmen første gang?
+
+   Prøv også at ændre varigheden (fx 20s) på bus og truck.
+   Hvad sker der, når et køretøj får kortere tid til den samme strækning?
+*/
