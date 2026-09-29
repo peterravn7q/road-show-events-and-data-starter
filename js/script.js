@@ -1,3 +1,4 @@
+"use strict";
 // Husk fra dag 1: skriv "use strict" herunder
 
 
@@ -21,19 +22,40 @@ const cars = [
         fuel: "Benzin",
         sound: "sound/red-car-horn.wav"
     },
-
-    // Skriv selv: et objekt for politibilen med samme nøgler som ovenfor.
-    //   id: "policeCar", brand: "Volvo", model: "242", year: 1982,
-    //   color: "Politibil", fuel: "Diesel", sound: "sound/police-car-sound.wav"
-
-    // Skriv selv: et objekt for den blå bil.
-    //   id: "blueCar", brand: "Volkswagen", model: "Passat", year: 1979,
-    //   color: "Lyseblå", fuel: "Diesel", sound: "sound/blue-car-sound.wav"
-
-    // Husk komma mellem objekterne!
+    {
+      id: "policeCar",
+      brand: "Volvo",
+      model: "242",
+      year: "1982",
+      color: "Blå og hviid",
+      fuel: "Diesel",
+      sound: "sound/police-car-sound.wav"
+    },
+    {
+      id: "blueCar",
+      brand: "Volkswagen",
+      model: "Passat",
+      color: "Lyseblå",
+      fuel: "Diesel",
+      sound: "sound/blue-car-sound.wav"
+    },
+    {
+      id: "bus",
+      brand: "Mercedes",
+      model: "bus",
+      color: "gul",
+      fuel: "Diesel",
+      sound: "sound/bus-sound.wav"
+    },
+    {
+      id: "truck",
+      brand: "Scania",
+      model: "truck",
+      color: "gul",
+      fuel: "diesel",
+      sound: "sound/truck-sound.wav"
+    },
 ];
-
-// Test dit array: åbn konsollen i browseren (F12) og se, hvad der bliver skrevet ud.
 console.log(cars);
 console.log(cars[0].brand);
 
@@ -48,8 +70,10 @@ console.log(cars[0].brand);
 // Du skulle gerne se tre linjer i konsollen: Ford, Volvo og Volkswagen.
 //
 // Ekstra: skriv også model og årgang ud på samme linje.
-
-
+cars.forEach(function(carElement) {
+   console.log(`${carElement.brand}${carElement.model}${carElement.color}${carElement.fuel}`);
+}
+);
 
 /* ---------------------------------------------------------
    2. HENT ELEMENTER FRA HTML
@@ -57,7 +81,8 @@ console.log(cars[0].brand);
 
 // Eksempel: vi henter tooltip'en ved hjælp af dens id-attribut
 const getTooltip = document.getElementById("tooltip");
-
+const getSun = document.getElementById("sun");
+const getScene = document.getElementById("scene");
 // Skriv selv: hent solen og scenen på samme måde, ved hjælp af deres id.
 // Variablerne skal hedde getSun og getScene.
 //
@@ -74,7 +99,9 @@ const getTooltip = document.getElementById("tooltip");
 // Nyt i dag: getScene.classList.toggle("night") tilføjer klassen "night", hvis den mangler,
 // og fjerner den, hvis den er der. Det er samme idé som din if/else i billedskift-opgaven,
 // men toggle klarer det på én linje. Selve udseendet står i CSS'en under .scene.night.
-
+getSun.addEventListener("click", function(){
+   getScene.classList.toggle("night");
+});
 
 
 /* ---------------------------------------------------------
@@ -95,6 +122,8 @@ function showTooltip(car) {
     getTooltip.innerHTML = `
         <strong>${car.brand} ${car.model}</strong><br>
         Årgang: ${car.year}<br>
+        Farve: ${car.color}<br>
+        Brændstof: ${car.fuel}
     `;
     // Skriv selv: tilføj to linjer mere inde i backticks ovenfor: farve (car.color) og brændstof (car.fuel).
 
@@ -110,7 +139,9 @@ function showTooltip(car) {
 
 // Skriv selv en funktion, der hedder hideTooltip.
 // Den skal fjerne klassen "is-visible" fra getTooltip. Brug classList.remove - det modsatte af classList.add.
-
+function hideTooltip(){
+   getTooltip.classList.remove("is-visible");
+}
 
 
 // Skriv selv en funktion, der hedder playSound, og som tager imod parameteren car.
@@ -126,7 +157,10 @@ function showTooltip(car) {
 //
 // OBS: play er en metode, der følger med Audio. Kald den ikke playSound -
 // playSound er navnet på din egen funktion.
-
+function playSound(car){
+   const audio = new Audio(car.sound);
+   audio.play();
+}
 
 
 /* ---------------------------------------------------------
@@ -148,6 +182,9 @@ cars.forEach(function(car) {
     });
 
     // Skriv selv: lyt efter "click" på getCarElem og kald playSound(car) inde i en anonym function.
+    getCarElem.addEventListener("click", function(){
+      playSound(car);
+    });
 
 });
 
