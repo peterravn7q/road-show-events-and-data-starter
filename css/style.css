@@ -15,7 +15,8 @@
    --color-sky-bot: #ffffff;
    --color-night: #222833;
    --color-sun: #ffffff;
-
+   --sun-size: 100px;
+   --car-w: 200px;
    /* Skriv selv: billedstørrelser (px)
       Opret to variabler her:
         --sun-size med værdien 100px  (solens bredde og højde)
@@ -48,8 +49,18 @@
      - background: en linear-gradient med de tre himmelfarver:
          var(--color-sky-top), var(--color-sky-mid), var(--color-sky-bot)
 */
-
-
+.scene {
+   position: relative;
+   height: 100vh;
+   overflow: hidden;
+   background: linear-gradient(var(--color-sky-top), var(--color-sky-mid), var(--color-sky-bot));
+}
+.scene.night {
+   position: relative;
+   height: 100vh;
+   overflow: hidden;
+   background: var(--color-night)
+}
 
 /* Skriv selv: nat-tilstand
    JavaScript tilføjer klassen "night" til .scene, når man klikker på solen.
@@ -118,7 +129,9 @@
 --------------------------------------------------------- */
 .car1,
 .car2,
-.car3 {
+.car3,
+.bus,
+.truck {
    position: absolute;
    width: var(--car-w);
    max-width: 28vw;
@@ -153,24 +166,13 @@
 .car2 {
    bottom: 2.8vh;
    right: -30vw; /* starter 30vw uden for skærmen til højre */
-   animation: car2 12s linear infinite;
+   animation: car2 12s linear infinite; 
 }
 
-/* Skriv selv: @keyframes car2
-   Brug car1 ovenfor som skabelon. Politibilen kører bare den modsatte vej.
-
-   Hvert trin skal have egenskaben transform med BEGGE funktioner:
-       transform: translateX(...) rotateY(180deg);
-
-   - 0%:   translateX(0)
-   - 100%: translateX(-130vw)   (negativt tal = mod venstre)
-   - rotateY(180deg) spejlvender billedet, så bilen vender den rigtige vej.
-     Den skal stå i BEGGE trin, ellers vender bilen sig undervejs.
-
-   Ekstra: skriv "90%, 100%" i stedet for "100%". Hvad sker der så?
-*/
-
-
+@keyframes car2 {
+   0% { transform: translateX(0) rotateY(180deg); }
+   100% { transform: translateX(-130vw) rotateY(180deg); }
+}
 
 /* ---------------------------------------------------------
    car3 (blå bil): venstre → højre (spejlvendt)
@@ -179,6 +181,11 @@
    bottom: -3.4vh;
    left: -30vw; /* starter 30vw uden for skærmen til venstre */
    animation: car3 8s linear infinite;
+}
+
+@keyframes car3 {
+   0% { transform: translateX(0) rotateY(180deg); }
+   100% { transform: translate(130vw) rotateY(180deg); }
 }
 
 /* Skriv selv: @keyframes car3
@@ -193,8 +200,27 @@
      anden vej i billedfilen. Den skal stå i BEGGE trin,
      ellers vender bilen sig undervejs.
 */
+.bus {
+   bottom: -1.5vh;
+   right: -30vw;
+   animation: bus 15s linear infinite;
+}
 
+@keyframes bus {
+   0% { transform: translateX(0); }
+   100% { transform: translateX(-130vw); }
+}
 
+.truck {
+   bottom: -0.4vh;
+   left: -30vw;
+   animation: truck 23s linear infinite
+}
+
+@keyframes truck {
+   0% { transform: translateX(0) rotateY(180deg); }
+   100% { transform: translateX(130vw) rotateY(180deg); }
+}
 
 /* ---------------------------------------------------------
    Tooltip (bilens informationer)
@@ -223,7 +249,10 @@
      - opacity til 1
      - transform til translateY(0)
 */
-
+.tooltip.is-visible {
+   opacity: 1;
+   transform: translateY(0);
+}
 
 
 
